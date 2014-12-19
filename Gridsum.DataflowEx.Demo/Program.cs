@@ -73,7 +73,7 @@
             aggregatorFlow.Post("b=2");
             aggregatorFlow.Post("a=5");
             aggregatorFlow.Complete();
-            await aggregatorFlow.CompletionTask;
+            await aggregatorFlow.Completion;
             Console.WriteLine("sum(a) = {0}", aggregatorFlow.Result["a"]); //prints sum(a) = 6
 
 
@@ -116,7 +116,7 @@
             aggregatorFlow.Post("a=5");
             aggregatorFlow.Post("a=badstring");
             aggregatorFlow.Complete();
-            await aggregatorFlow.CompletionTask;
+            await aggregatorFlow.Completion;
         }
 
         public static async Task TransformAndLinkDemo()
@@ -134,8 +134,8 @@
             }
 
             await d1.SignalAndWaitForCompletionAsync();
-            await d2.CompletionTask;
-            await d3.CompletionTask;
+            await d2.Completion;
+            await d3.Completion;
         }
 
         public static async Task LinkLeftToDemo()
@@ -155,8 +155,8 @@
             }
 
             await d1.SignalAndWaitForCompletionAsync();
-            await d2.CompletionTask;
-            await d3.CompletionTask;
+            await d2.Completion;
+            await d3.Completion;
         }
 
         public static async Task CircularFlowAutoComplete()
@@ -178,7 +178,7 @@
             f.Post("{Name: 'carmen', Age: 80}");
             f.Post("{Name: 'neo', Age: -1}");
             await f.SignalAndWaitForCompletionAsync();
-            await sayHello.CompletionTask;
+            await sayHello.Completion;
 
             Console.WriteLine("Total people count: " + f.PeopleRecorder[typeof(Person)]);
             Console.WriteLine(f.PeopleRecorder.DumpStatistics());
@@ -216,7 +216,7 @@
             f.Post("{Age: 80}"); //Name will be default value: "N/A"
             f.Post("{Name: 'neo' }"); // Age will be default value: -1
             await f.SignalAndWaitForCompletionAsync();
-            await dbInserter.CompletionTask;
+            await dbInserter.Completion;
         }
 
         public static async Task BulkInserterDemo2()
@@ -270,9 +270,9 @@
             broadcaster.Post("third message");
 
             await broadcaster.SignalAndWaitForCompletionAsync();
-            await printer1.CompletionTask;
-            await printer2.CompletionTask;
-            await printer3.CompletionTask;
+            await printer1.Completion;
+            await printer2.Completion;
+            await printer3.Completion;
         }
 
         public static async Task MyLoggerDemo()
@@ -339,7 +339,7 @@
             lookupNode.LinkTo(factInserter);
 
             await lookupNode.SignalAndWaitForCompletionAsync();
-            await factInserter.CompletionTask;
+            await factInserter.Completion;
         }
     }
 }

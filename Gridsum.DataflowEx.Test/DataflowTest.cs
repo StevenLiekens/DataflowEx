@@ -62,7 +62,7 @@ namespace Gridsum.DataflowEx.Test
             container1.InputBlock.SafePost(1);
             container1.InputBlock.Complete();
 
-            Assert.IsTrue(await container2.CompletionTask.FinishesIn(TimeSpan.FromSeconds(1)));
+            Assert.IsTrue(await container2.Completion.FinishesIn(TimeSpan.FromSeconds(1)));
             Assert.IsTrue(postTaskDone);
         }
 
@@ -93,7 +93,7 @@ namespace Gridsum.DataflowEx.Test
             await Task.Delay(1000); //IMPORTANT: wait for block work done (nothing left in their input/output queue)
             container1.InputBlock.Complete();
 
-            Assert.IsTrue(await container2.CompletionTask.FinishesIn(TimeSpan.FromSeconds(1)));
+            Assert.IsTrue(await container2.Completion.FinishesIn(TimeSpan.FromSeconds(1)));
         }
 
         [TestMethod]
@@ -132,8 +132,8 @@ namespace Gridsum.DataflowEx.Test
 
             var sleepingTask = Task.Delay(TimeSpan.FromDays(1), cts.Token);
 
-            await EnsureTaskFail<SystemException>(faultyContainer.CompletionTask);
-            await EnsureTaskFail<LinkedDataflowFailedException>(involvedContainer.CompletionTask);
+            await EnsureTaskFail<SystemException>(faultyContainer.Completion);
+            await EnsureTaskFail<LinkedDataflowFailedException>(involvedContainer.Completion);
 
             Assert.IsTrue(await sleepingTask.FinishesIn(TimeSpan.FromSeconds(1)));
         }
@@ -175,7 +175,7 @@ namespace Gridsum.DataflowEx.Test
             flow.InputBlock.SafePost("abc");
             flow.InputBlock.SafePost(new object());
             flow.InputBlock.Complete();
-            await flow.CompletionTask;
+            await flow.Completion;
         }
 
         [TestMethod]
@@ -188,14 +188,14 @@ namespace Gridsum.DataflowEx.Test
             flow.InputBlock.SafePost("abc");
             flow.InputBlock.SafePost(new object());
             flow.InputBlock.Complete();
-            await flow.CompletionTask;
+            await flow.Completion;
         }
         
         [TestMethod]
         public async Task TestDynamicRegistering()
         {
             var container = new DynamicContainer();
-            var completion = container.CompletionTask;
+            var completion = container.Completion;
             var dynamicBlock = container.RegisterBlockDynamically();
             container.InputBlock.Complete();
             Assert.IsFalse(await completion.FinishesIn(TimeSpan.FromMilliseconds(100)));
@@ -262,8 +262,8 @@ namespace Gridsum.DataflowEx.Test
                         block.Complete();
                     });
 
-            await d1.CompletionTask;
-            await d2.CompletionTask;
+            await d1.Completion;
+            await d2.Completion;
         }
 
         [TestMethod]
@@ -287,8 +287,8 @@ namespace Gridsum.DataflowEx.Test
 
             d1.Complete();
 
-            await d2.CompletionTask;
-            await d3.CompletionTask;
+            await d2.Completion;
+            await d3.Completion;
 
             Assert.AreEqual(10000 / 3, count2);
             Assert.AreEqual(10000 / 3, count3);
@@ -315,8 +315,8 @@ namespace Gridsum.DataflowEx.Test
 
             d1.Complete();
 
-            await d2.CompletionTask;
-            await d3.CompletionTask;
+            await d2.Completion;
+            await d3.Completion;
 
             Assert.AreEqual(10000 / 3, count2);
             Assert.AreEqual(10000 / 3, count3);
@@ -352,8 +352,8 @@ namespace Gridsum.DataflowEx.Test
 
             await d1.SignalAndWaitForCompletionAsync();
             
-            await d2.CompletionTask;
-            await d3.CompletionTask;
+            await d2.Completion;
+            await d3.Completion;
 
             Assert.AreEqual(5000, count2);
             Assert.AreEqual(5000, count3);
@@ -390,8 +390,8 @@ namespace Gridsum.DataflowEx.Test
 
             await d1.SignalAndWaitForCompletionAsync();
 
-            await d2.CompletionTask;
-            await d3.CompletionTask;
+            await d2.Completion;
+            await d3.Completion;
 
             Assert.AreEqual(5000, count2);
             Assert.AreEqual(5000, count3);

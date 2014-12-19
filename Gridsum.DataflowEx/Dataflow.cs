@@ -280,7 +280,7 @@ namespace Gridsum.DataflowEx
         {
             try
             {
-                while (m_children.Count == 0 || !this.CompletionTask.IsCompleted)
+                while (m_children.Count == 0 || !this.Completion.IsCompleted)
                 {
                     if (m_dataflowOptions.FlowMonitorEnabled)
                     {
@@ -400,7 +400,7 @@ namespace Gridsum.DataflowEx
         /// <summary>
         /// Represents the completion of the whole dataflow
         /// </summary>
-        public Task CompletionTask
+        public Task Completion
         {
             get
             {
@@ -504,9 +504,9 @@ namespace Gridsum.DataflowEx
             otherDataflow.RegisterDependency(this);
 
             //Make sure other dataflow also fails me
-            otherDataflow.CompletionTask.ContinueWith(otherTask =>
+            otherDataflow.Completion.ContinueWith(otherTask =>
             {
-                if (this.CompletionTask.IsCompleted)
+                if (this.Completion.IsCompleted)
                 {
                     return;
                 }
@@ -565,7 +565,7 @@ namespace Gridsum.DataflowEx
                 TaskEx.AwaitableWhenAll(() => m_dependencies, f => f.Completion).ContinueWith(
                     upstreamTask =>
                     {
-                        if (!this.CompletionTask.IsCompleted)
+                        if (!this.Completion.IsCompleted)
                         {
                             if (upstreamTask.IsFaulted)
                             {
@@ -708,7 +708,7 @@ namespace Gridsum.DataflowEx
         {
             LogHelper.Logger.InfoFormat("{0} Telling myself there is no more input and wait for children completion", this.FullName);
             this.InputBlock.Complete(); //no more input
-            await this.CompletionTask.ConfigureAwait(false);
+            await this.Completion.ConfigureAwait(false);
         }
 
         /// <summary>

@@ -54,7 +54,7 @@ namespace Gridsum.DataflowEx.Demo
             RegisterChildren(_buffer, heater, cooler, heartbeat);
             
             //ring registration
-            RegisterChildRing(_buffer.CompletionTask, heater, cooler, heartbeat);
+            RegisterChildRing(_buffer.Completion, heater, cooler, heartbeat);
         }
 
         public override ITargetBlock<int> InputBlock { get { return _buffer.InputBlock; } }

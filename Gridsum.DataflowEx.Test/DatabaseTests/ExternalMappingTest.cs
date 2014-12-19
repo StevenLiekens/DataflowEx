@@ -35,7 +35,7 @@ namespace Gridsum.DataflowEx.Test.DatabaseTests
             f.Post("{Age: 80}"); //Name will be default value: "N/A2"
             f.Post("{Name: 'neo' }"); // Age will be default value: -2
             await f.SignalAndWaitForCompletionAsync();
-            await dbInserter.CompletionTask;
+            await dbInserter.Completion;
 
             using (var conn = LocalDB.GetLocalDB("ExternalMappingTest1"))
             {
@@ -67,7 +67,7 @@ namespace Gridsum.DataflowEx.Test.DatabaseTests
             f.Post("{Age: 80}"); //Name will be default value: "N/A"
             f.Post("{Name: 'neo' }"); // Age will be default value: -2
             await f.SignalAndWaitForCompletionAsync();
-            await dbInserter.CompletionTask;
+            await dbInserter.Completion;
 
             using (var conn = LocalDB.GetLocalDB("ExternalMappingTest2"))
             {
@@ -98,7 +98,7 @@ namespace Gridsum.DataflowEx.Test.DatabaseTests
             f.Post("{Age: 80}"); //Name will be default value: "N/A"
             f.Post("{Name: 'neo' }"); // Age will be default value: -2
             await f.SignalAndWaitForCompletionAsync();
-            await dbInserter.CompletionTask;
+            await dbInserter.Completion;
 
             using (var conn = LocalDB.GetLocalDB("ExternalMappingTest3"))
             {

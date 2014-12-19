@@ -180,7 +180,7 @@ namespace Gridsum.DataflowEx
         public DataflowDependency(IDataflow dependentFlow, Dataflow host, DependencyKind kind, Action<Task> completionCallback = null) : base(host, completionCallback, kind)
         {
             m_dependentFlow = (Dataflow)dependentFlow;
-            m_completion = GetWrappedCompletion(this.m_dependentFlow.CompletionTask);
+            m_completion = GetWrappedCompletion(this.m_dependentFlow.Completion);
         }
 
         public Dataflow Flow { get { return this.m_dependentFlow; } }

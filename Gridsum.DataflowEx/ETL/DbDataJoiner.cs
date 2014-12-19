@@ -255,7 +255,7 @@
 
             RegisterChild(m_dimInserter);
             RegisterChild(hb);
-            RegisterChildRing(transformer.CompletionTask, m_lookupNode, m_dimInserter, hb);
+            RegisterChildRing(transformer.Completion, m_lookupNode, m_dimInserter, hb);
         }
 
         protected PropertyInfo ExtractPropertyInfo<T1, T2>(Expression<Func<T1, T2>> expression)

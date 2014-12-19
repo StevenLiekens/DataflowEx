@@ -8,20 +8,12 @@ namespace Gridsum.DataflowEx
     /// <summary>
     /// Represents a dataflow graph
     /// </summary>
-    public interface IDataflow
+    public interface IDataflow : IDataflowBlock
     {
         IEnumerable<IDataflowBlock> Blocks { get; }
-        Task CompletionTask { get; }
-        void Fault(Exception exception);
         string Name { get; }
         string FullName { get; }
         int BufferedCount { get; }
-
-        /// <summary>
-        /// Signals to the IDataflow that it should not accept any more messages
-        /// </summary>
-        void Complete();
-
         void RegisterDependency(IDataflow dependencyDataflow);
     }
 
